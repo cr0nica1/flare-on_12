@@ -108,7 +108,7 @@ exec(marshal.loads(sequencer_code))
 
 **Initial Dynamic Analysis**
 
-Upon execution, the script immediately failed. This failure was traced to a version dependency.Therefore, the target requires a Python 3.12 environment to run. After satisfying the environment dependency and re-executing the script, the program successfully launches but immediately terminates, displaying the following 'Authentication Failed' output:"
+Upon execution, the script immediately failed. This failure was traced to a version dependency.Therefore, the target requires a Python 3.12 environment to run. After satisfying the environment dependency and re-executing the script, the program successfully launches but immediately terminates, displaying the following `Authentication Failed` output:
 
 ![chall2-Authentication Failed]({{ '/assets/img/flareon12/chall2-pic1.png' | relative_url }})
 
