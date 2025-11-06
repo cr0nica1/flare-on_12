@@ -8,92 +8,41 @@ mathjax: true
 author: Hoàng Tiến Minh
 ---
 
-The Flare-On Challenge is a reverse engineering contest held every year by the FLARE team (Maniant, Google Cloud Security) for all reverse engineers and malware analysts. This year it has only 9 challenges instead of 10 in 4 week, and some challenges is very strange and difficult. Luckily, i finish this contest at the 27th day (the contest held in 28 day btw).
+The Flare-On Challenge is a reverse engineering contest held every year by the FLARE team (Maniant, Google Cloud Security) for all reverse engineers and malware analysts. This year it has only 9 challenges instead of 10 in 4 week, and some challenges is very strange and difficult. Luckily, i finish this contest at the 27th day (the contest held in 28 days btw). 
 
 ![Flareon profile]({{ '/assets/img/flareon12/finisher_picture.png' | relative_url }})
 
-**Here is some bold text**
+This year, Viet Nam has 27 finishers, takes the stacks the winners circle. I am very proud that we take the most finisher by country back-to-back, prove that how excellent of Vietnamese reverse engineers and malware analysts.
 
-## Here is a secondary heading
+![Flareon profile]({{ '/assets/img/flareon12/finisher-by-country.png' | relative_url }})
+
+Here is my solution of this year flare on challenge. Please give me the feedback if you have great solution.
 
 
+## Challenge 1: Drill Baby Drill!.
 
-Here's a table:
+![Chall1-description]({{ '/assets/img/flareon12/chall1.png' | relative_url }})
 
-| Number | Next number | Previous number |
-| :------ |:--- | :--- |
-| Five | Six | Four |
-| Ten | Eleven | Nine |
-| Seven | Eight | Six |
-| Two | Three | One |
+The challenge provides a Python script implementing a 'find the bear' game. The objective is to retrieve the flag, which is revealed upon successful completion. To win, the player must correctly 'drill' the 'bear' location on each level without hitting any 'rocks'. The game consists of multiple levels, each containing a single 'bear', and the level sequence is randomized.
+![Game-UI]({{ '/assets/img/flareon12/chall1-pic1.png' | relative_url }})
 
-You can use [MathJax](https://www.mathjax.org/) to write LaTeX expressions. For example:
-When \\(a \ne 0\\), there are two solutions to \\(ax^2 + bx + c = 0\\) and they are $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+### The winning mechanism
 
-How about a yummy crepe?
+A logic flaw was identified in the game's obstacle generation mechanism. The game utilizes a `boulder_layout` array, indexed by the column `x`, to determine obstacle locations. Upon inspection, it was found that for any given `current_level`, the column index corresponding to `len(LevelNames[current_level])` (i.e., the column where `x == len(LevelNames[current_level])`) is hardcoded with the value `-1`.
+The game's fail-state (hitting a rock) is triggered by the condition `boulder_level == drill_level`. Since the `boulder_level` at this specific column is set to `-1`, this equality check will never evaluate to true, rendering this column 'safe' (rock-free) by default. This behavior strongly implies that the value `len(LevelNames[current_level])` is the deterministic solution (the 'bear's' column index) for each respective level.
 
-![Crepe](https://beautifuljekyll.com/assets/img/crepe.jpg)
-
-It can also be centered!
-
-![Crepe](https://beautifuljekyll.com/assets/img/crepe.jpg){: .mx-auto.d-block :}
-
-Here's a code chunk:
-
-~~~
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
-~~~
-
-And here is the same code with syntax highlighting:
-
-```javascript
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
+```python
+LevelNames = [
+    'California',
+    'Ohio',
+    'Death Valley',
+    'Mexico',
+    'The Grand Canyon'
+]
 ```
 
-And here is the same code yet again but with line numbers:
 
-{% highlight javascript linenos %}
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
-{% endhighlight %}
-
-## Boxes
-You can add notification, warning and error boxes like this:
-
-### Notification
-
-{: .box-note}
-**Note:** This is a notification box.
-
-### Warning
-
-{: .box-warning}
-**Warning:** This is a warning box.
-
-### Error
-
-{: .box-error}
-**Error:** This is an error box.
-
-## Local URLs in project sites {#local-urls}
-
-When hosting a *project site* on GitHub Pages (for example, `https://USERNAME.github.io/MyProject`), URLs that begin with `/` and refer to local files may not work correctly due to how the root URL (`/`) is interpreted by GitHub Pages. You can read more about it [in the FAQ](https://beautifuljekyll.com/faq/#links-in-project-page). To demonstrate the issue, the following local image will be broken **if your site is a project site:**
-
-![Crepe](/assets/img/crepe.jpg)
-
-If the above image is broken, then you'll need to follow the instructions [in the FAQ](https://beautifuljekyll.com/faq/#links-in-project-page). Here is proof that it can be fixed:
-
-![Crepe]({{ '/assets/img/crepe.jpg' | relative_url }})
 
 <details markdown="1">
-<summary>Click here!</summary>
 Here you can see an **expandable** section
 </details>
