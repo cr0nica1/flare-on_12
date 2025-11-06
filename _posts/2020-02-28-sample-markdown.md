@@ -1,23 +1,22 @@
 ---
 layout: post
-title: Sample blog post to learn markdown tips
-subtitle: There's lots to learn!
-gh-repo: daattali/beautiful-jekyll
-gh-badge: [star, fork, follow]
-tags: [test]
+title: The 12th annual Flare-On challenge Solution
+gh-repo: cr0nica1/infosec
+tags: [flareon12]
 comments: true
 mathjax: true
-author: Bill Smith
+author: Hoàng Tiến Minh
 ---
 
-{: .box-success}
-This is a demo post to show you how to write blog posts with markdown.  I strongly encourage you to [take 5 minutes to learn how to write in markdown](https://markdowntutorial.com/) - it'll teach you how to transform regular text into bold/italics/tables/etc.<br/>I also encourage you to look at the [code that created this post](https://raw.githubusercontent.com/daattali/beautiful-jekyll/master/_posts/2020-02-28-sample-markdown.md) to learn some more advanced tips about using markdown in Beautiful Jekyll.
+The Flare-On Challenge is a reverse engineering contest held every year by the FLARE team (Maniant, Google Cloud Security) for all reverse engineers and malware analysts. This year it has only 9 challenges instead of 10 in 4 week, and some challenges is very strange and difficult. Luckily, i finish this contest at the 27th day (the contest held in 28 day btw).
+
+![Flareon profile]({{ '/assets/img/flareon12/finisher_picture.png' | relative_url }})
 
 **Here is some bold text**
 
 ## Here is a secondary heading
 
-[This is a link to a different site](https://deanattali.com/) and [this is a link to a section inside this page](#local-urls).
+
 
 Here's a table:
 
