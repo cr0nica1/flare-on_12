@@ -8,15 +8,15 @@ mathjax: true
 author: Hoàng Tiến Minh
 ---
 
-The Flare-On Challenge is a reverse engineering contest held every year by the FLARE team (Maniant, Google Cloud Security) for all reverse engineers and malware analysts. This year it has only 9 challenges instead of 10 in 4 week, and some challenges is very strange and difficult. Luckily, i finish this contest at the 27th day (the contest held in 28 days btw). 
+The Flare-On Challenge is a reverse engineering contest held every year by the FLARE team (Mandiant, Google Cloud Security) for all reverse engineers and malware analysts. This year, it had only 9 challenges instead of 10, spread over 4 weeks, and some of them were quite strange and difficult. Luckily, I finished the contest on the 27th day (it lasted for 28 days, by the way).
 
 ![Flareon profile]({{ '/assets/img/flareon12/finisher_picture.png' | relative_url }})
 
-This year, Viet Nam has 27 finishers, takes the stacks the winners circle. I am very proud that we take the most finisher by country back-to-back, prove that how excellent of Vietnamese reverse engineers and malware analysts.
+This year, Vietnam had 27 finishers, taking the top spot in the winners’ circle. I’m very proud that we achieved the highest number of finishers by country for the second year in a row, proving how excellent Vietnamese reverse engineers and malware analysts are.
 
 ![Flareon profile]({{ '/assets/img/flareon12/finisher-by-country.png' | relative_url }})
 
-Here is my solution of this year flare on challenge. Please give me the feedback if you have great solution.
+Here is my solution for this year’s Flare-On Challenge. Please feel free to share your feedback if you have a better solution!
 
 
 ## Challenge 1: Drill Baby Drill!
@@ -39,5 +39,7 @@ LevelNames = [
     'The Grand Canyon'
 ]
 ```
+
+
 
 
