@@ -42,7 +42,3 @@ LevelNames = [
 ```
 
 
-
-<details markdown="1">
-Here you can see an **expandable** section
-</details>
