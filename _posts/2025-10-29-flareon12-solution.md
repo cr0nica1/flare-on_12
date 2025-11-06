@@ -148,7 +148,7 @@ This decompiled script functions as a second-stage loader. Its purpose is to exe
 
 ![chall2-stage2decrypt]({{ '/assets/img/flareon12/chall2-pic3.png' | relative_url }})
 
-**Analyzing the stage-2 decrypted source code**
+**Third-Stage Payload Analysis**
 
 The decompilation process yielded the following reconstructed Python source code:
 
