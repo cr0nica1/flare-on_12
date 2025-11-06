@@ -11,3 +11,54 @@ footer.footer-min {
   border-top: 1px solid #eeeeee;
   text-align: center;
 }
+/* Thiết lập layout 2 cột */
+.post-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Cột nội dung chính */
+.post-content {
+  flex-grow: 1;
+}
+
+/* Cột TOC bên trái */
+.toc-sidebar {
+  width: 280px; /* Chiều rộng cố định cho TOC */
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px; /* Vị trí dính */
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Style cho mục lục bên trong */
+#table-of-contents ul {
+  list-style: none;
+  padding-left: 10px;
+}
+#table-of-contents a {
+  text-decoration: none;
+  color: #555;
+}
+#table-of-contents ul ul {
+  padding-left: 20px;
+}
+
+/* --- Responsive cho di động --- */
+@media (max-width: 1024px) {
+  .post-container {
+    flex-direction: column; /* Chuyển về 1 cột */
+  }
+  
+  .toc-sidebar {
+    position: static;
+    width: 100%;
+    max-height: none;
+    overflow-y: visible;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+  }
+}
