@@ -1126,7 +1126,7 @@ pre {
 }
 
 .toc-box {
-  background-color: #A9A9A9; /* Nền màu xám nhạt */
+  background-color: #f5f5f5; /* Nền màu xám nhạt */
   border: 1px solid #ddd;   /* Viền (khung) xung quanh */
   padding: 15px 20px;       /* Khoảng đệm bên trong (trên/dưới 15px, trái/phải 20px) */
   border-radius: 5px;       /* Bo góc cho mềm mại */
