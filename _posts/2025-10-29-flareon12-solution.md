@@ -202,7 +202,7 @@ asyncio.run(activate_catalyst())
 ```
 {% endraw %}
 
-he program retrieves the current user's local username. It then uses the following algorithm to generate a `user_signature`:
+The program retrieves the current user's local username. It then uses the following algorithm to generate a `user_signature`:
 
 {% raw %}
 ```python
