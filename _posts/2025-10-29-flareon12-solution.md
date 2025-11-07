@@ -383,3 +383,5 @@ By using a Depth-First Search (DFS) algorithm to exhaustively traverse the paths
 To get the flag, first reset the values in the ADS. Then, execute the program and provide the input string that was recovered.
 
 ![chall5-correct-input]({{ '/assets/img/flareon12/chall5-pic13.png' | relative_url }})
+
+Flag: f1n1t3_st4t3_m4ch1n3s_4r3_fun@flare-on.com
