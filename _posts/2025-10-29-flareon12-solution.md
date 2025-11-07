@@ -115,7 +115,9 @@ Upon execution, the script immediately failed. This failure was traced to a vers
 ![chall2-Authentication Failed]({{ '/assets/img/flareon12/chall2-pic1.png' | relative_url }})
 
 **Analyzing the encrypted instructions**
+
 Initial static analysis of project_chimera.py shows that it functions as a loader. Its sole responsibility is to deobfuscate and execute a secondary payload. The process is a two-step: It first decompresses a data blob using `zlib.decompress()`. The resulting bytes are then deserialized into a Python code object using `marshal.load()` and immediately executed.
+
 The core logic resides in this marshaled code object, which must be reverse-engineered. To achieve this, I intercepted the deserialized code object (the output of marshal.load()) and dumped it to a standalone .pyc file. This file was then processed using an online decompiler (https://pylingual.io/) to reconstruct the human-readable Python source, allowing for further analysis.
 
 ![chall2-stage1decrypt]({{ '/assets/img/flareon12/chall2-pic2.png' | relative_url }})
