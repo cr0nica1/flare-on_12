@@ -304,5 +304,82 @@ The UnholyDragon-150.exe file generated in this new run also had an incorrect ma
 
 Flag: dr4g0n_d3n1al_of_s3rv1ce@flare-on.com
 
+## Challenge 5: ntfsm.
 
+![chall5-Description]({{ '/assets/img/flareon12/chall5.png' | relative_url }})
 
+**Initial static analysis**
+
+The challenge provides a PE file named `ntfsm.exe`. As per standard procedure, `Detect-it-easy` was used to perform a preliminary assessment of the file.
+
+![chall5-DiE]({{ '/assets/img/flareon12/chall5-pic1.png' | relative_url }})"
+
+`DiE` results indicate the file is a standard C++ binary, showing no signs of being packed or obfuscated. The file was then loaded into IDA for further analysis.
+
+![chall5-loadIDA]({{ '/assets/img/flareon12/chall5-pic2.png' | relative_url }})
+
+IDA reported that the main function is too large to generate a control-flow graph or create pseudocode. This is a very difficult scenario for analysis. I suspect that I will have to rely more heavily on information gathered during dynamic analysis. First, however, I need to examine some basic information in the main function. I observed that at the beginning of main (address `0x14000C0B0`), four `std::string` objects are created: `"state"`, `"input"`, `"position"`, and `"transitions"`. This immediately suggests a Finite State Machine. However, there is no proof of this yet, so I will revisit this hypothesis later.
+
+![chall5-string-construct]({{ '/assets/img/flareon12/chall5-pic3.png' | relative_url }})
+
+Based on these findings, I proceeded to set a breakpoint and start debugging the application.
+
+**Dynamic analysis**
+
+I attempted to use the built-in IDA debugger, but it repeatedly crashed ('Not Responding'). Therefore, I switched to x64dbg for debugging. This was a reasonable choice since IDA wasn't offering much help anyway, as its decompiler functionalities were already unusable for this function. I set a breakpoint at the location immediately after the program constructed the four strings. The next instruction executed is a `CALL` to the function `ntfsm.14000166D`.
+
+![chall5-debug]({{ '/assets/img/flareon12/chall5-pic4.png' | relative_url }})
+
+Tracing into function `ntfsm.14000166D`, it immediately jumps to function `ntfsm.140FF1640`. Upon analyzing `ntfsm.140FF1640`, it's clear that this function is simply a re-implementation of the `std::string` constructor. Therefore, this function is not relevant and can be disregarded.
+
+![chall5-14000166D]({{ '/assets/img/flareon12/chall5-pic5.png' | relative_url }})
+
+Returning to the main function, a breakpoint was set at the location of the `CALL` to `ntfsm.1400014A1`. This function is a wrapper for the function `ntfsm.140FF0FE0`. We will now analyze the logic of `ntfsm.140FF0FE0`.
+
+![chall5-140FF0FE0]({{ '/assets/img/flareon12/chall5-pic6.png' | relative_url }})
+
+This function performs a `CreateFile` operation, passing `ntsfm.exe:position` as the filename. This `CreateFile` call is not intended to create a new file. Instead, the program is simply accessing data from Alternate Data Streams. Specifically, it is opening the `:position` stream associated with the `ntfsm.exe` file itself.
+
+![chall5-ADS_operation]({{ '/assets/img/flareon12/chall5-pic7.png' | relative_url }})
+
+Analyzing this function's logic, it's clear that it simply reads a qword from the Alternate Data Stream into a buffer. I continued debugging and identified several other functions that perform ADS operations:
+
+- `ntfsm.14000AF00`: Reads data from an ADS into a buffer.
+
+- `ntfsm.140FF1190`: Writes a qword to an ADS.
+
+- `ntfsm.14000ADE0`: Writes arbitrary data to an ADS.
+
+With this information, we can easily recognize that the function calls at addresses `0x14000C192` and `0x14000C1E5` are, in fact, reading the `:position` and `:transitions` streams, respectively. The data is stored in two local stack variables at `[rsp+58AB0]` and `[rsp+58AB8]`. The next step is to continue analyzing further down to find the conditions required to print the 'correct' message.
+
+![chall5-correct_check]({{ '/assets/img/flareon12/chall5-pic8.png' | relative_url }})
+
+The condition for the program to print the 'correct' message is that the values retrieved from both the `:position` stream and the `:transitions` stream must both be equal to 16.
+
+![chall5-check_condition]({{ '/assets/img/flareon12/chall5-pic9.png' | relative_url }})
+
+Continuing the analysis of the next block: at address `0x14000C9D7`, the program stores the current character from the input string into the stack variable `[rsp+30]`. We then continued to 'step into' the execution until the `RIP` pointed to address `0x14000CA5A`:
+
+![chall5-jmp_to_check_char]({{ '/assets/img/flareon12/chall5-pic10.png' | relative_url }})
+
+The address that the jmp instruction attempts to jump to is `0x140860252`. However, tracing into this address reveals a block that compares the current character against three values: `'i'`, `'U'`, and `'J'`. If a match is found, it jumps to a corresponding function branch. If we trace backward to address `0x14000CA50` (where the `rcx` value was prepared before the jump), we find this formula: 
+
+`ecx = [rax + rcx*4 + C687B8]`
+
+`rcx` is loaded from the stack variable `[rsp+58D38]`. It can be predicted that this is a state variable which is used as an index for a jump table. The base address of this jump table (`rax + C687B8`) resolves at runtime to `0x140C687B8`. To easily identify this structure, we will use IDA to inspect the data at this address.
+
+![chall5-jump-table]({{ '/assets/img/flareon12/chall5-pic11.png' | relative_url }})
+
+Upon inspection, the functions within this jump table are all simple comparators, checking against hardcoded character values. It is now clear that the value from the :state stream is used as the index for this jump table. The data in the `:position` stream acts as an iterator for the `:input` stream. The program takes the character value at the current position and compares it against the hardcoded character in the jump table's handler function. When the input character matches the hardcoded character in the comparison handler, the program updates the corresponding state and position values. It then saves these updated values back into their respective ADS streams. The algorithm then repeats, using these newly updated values from the Alternate Data Streams.
+
+**Crafting the script**
+
+With these characteristics, it is clear we can conclude that the program is a Finite State Machine (FSM). Debugging is relatively difficult and complex because the jump table is too large, and a 16-character string is required. However, the logic for printing 'correct' (where position and transitions both equal 16) tells us that if we can make the program pass this check 16 times, the input must be correct. Furthermore, the functions in the jump table have very similar code structures. This means we can analyze them statically to find the correct input. The problem now reduces to: finding the input string that results in the maximum number of successful jumps through the FSM. This is analogous to the "Longest Path" problem in a Directed Acyclic Graph (DAG).
+
+By using a Depth-First Search (DFS) algorithm to exhaustively traverse the paths in this graph, I was finally able to find the correct input. This search was performed assuming the initial state where all values in the Alternate Data Streams were zero.
+
+![chall5-correct-input]({{ '/assets/img/flareon12/chall5-pic12.png' | relative_url }})
+
+To get the flag, first reset the values in the ADS. Then, execute the program and provide the input string that was recovered.
+
+![chall5-correct-input]({{ '/assets/img/flareon12/chall5-pic13.png' | relative_url }})
