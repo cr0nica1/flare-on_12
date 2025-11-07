@@ -276,6 +276,8 @@ Flag: Puzzl1ng-D3vilish-F0rmat@flare-on.com
 
 ## Challenge 4: UnholyDragon
 
+![chall4-Description]({{ '/assets/img/flareon12/chall4.png' | relative_url }})
+
 The challenge artifact is a file named `UnholyDragon-150.exe`. Based on its extension, it is presumably a Windows Portable Executable (PE). However, analysis using `Detect-it-easy` yielded anomalous results. DiE was unable to parse the file or identify it as a valid PE executable.
 
 ![chall4-DiE]({{ '/assets/img/flareon12/chall4-pic1.png' | relative_url }})
