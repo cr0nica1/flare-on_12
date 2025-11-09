@@ -392,7 +392,7 @@ Flag: f1n1t3_st4t3_m4ch1n3s_4r3_fun@flare-on.com
 
 The challenge artifact is an ELF binary named `chat_client`. Detect-it-easy (DiE) was used to identify the programming language used.
 
-![chall6-Die]({{ '/assets/img/flareon12/chall6.png' | relative_url }})
+![chall6-Die]({{ '/assets/img/flareon12/chall6-pic1.png' | relative_url }})
 
 The initial analysis (from DiE) confirms the artifact is a PyInstaller bundle:
 
