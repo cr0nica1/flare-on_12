@@ -434,20 +434,19 @@ Flag: W3b3_i5_Gr8@flare-on.com
 
 ![chall7]({{ '/assets/img/flareon12/chall7.png' | relative_url }})
 
-Challenge cho một file PE `hopeanddream.exe`. Như thường lệ, sử dụng Detect-it-easy để xác định ngôn ngữ, compiler và tình trạng packer.
+The challenge artifact is a Windows Portable Executable (PE) named `hopeanddream.exe`. Following the standard triage protocol, the binary was first analyzed with Detect-it-easy (DiE). The objective of this initial assessment is to determine its core properties: the source language, compiler, and the presence of any packers or obfuscation.
 
 ![chall7-DiE]({{ '/assets/img/flareon12/chall7-pic1.png' | relative_url }})
 
-Dựa trên thông tin này, file được viết bằng C++ và không hề bị pack. Tải file vào IDA để phân tích.
+The DiE analysis confirmed that the artifact is a non-packed binary, compiled with C++. Given that no external packers or deobfuscation layers are present, the binary was loaded directly into IDA Pro to commence in-depth static analysis of its core logic.
 
 ![chall7-load]({{ '/assets/img/flareon12/chall7-pic2.png' | relative_url }})
 
-IDA không thể xây dựng control-flow graph cho hàm `main`, cũng không thể decompile được do file quá lớn. Điều chỉnh dung lượng tối đa một hàm có thể decompile cho IDA để decompile.
+IDA failed to construct the Control-Flow Graph (CFG) for the main function and was also unable to generate pseudocode it. This failure is due to the function's size exceeding IDA's default processing limits. To bypass this, I had to adjust IDA's configuration to increase the maximum function size limit allowed for the decompiler.
 
 ![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic3.png' | relative_url }})
 
-Phần lớn các đoạn mã trong hàm main là các đoạn mã Mixed Boolean-Arithmetic (MBA). Nếu cố gắng đọc các đoạn MBA này, chúng ta sẽ thấy các đoạn mã nằm giữa một câu lệnh đọc biến toàn cục và một câu lệnh ghi biến toàn cục là các đoạn MBA rác. Viết script để patch hết chúng lại bằng nop sau đó decompile lại.
-
+The majority of the code in the main function is Mixed Boolean-Arithmetic (MBA) obfuscation. Upon closer inspection, a clear pattern emerges: the "junk" MBA code blocks are consistently sandwiched between one instruction that reads from a global variable and another instruction that writes to a global variable. This suggests these intermediate MBA blocks are junk logic that can be safely removed. The plan is to write a script to patch all of these junk code segments by overwriting them with NOP (No-Operation) instructions. The patched binary will then be re-analyzed and decompiled.
 
 
 
