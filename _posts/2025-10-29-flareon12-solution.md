@@ -385,3 +385,47 @@ To get the flag, first reset the values in the ADS. Then, execute the program an
 ![chall5-correct-input]({{ '/assets/img/flareon12/chall5-pic13.png' | relative_url }})
 
 Flag: f1n1t3_st4t3_m4ch1n3s_4r3_fun@flare-on.com
+
+## Challenge 6: Chain of Demands
+
+![chall6-Description]({{ '/assets/img/flareon12/chall6.png' | relative_url }})
+
+The challenge artifact is an ELF binary named `chat_client`. Detect-it-easy (DiE) was used to identify the programming language used.
+
+![chall6-Die]({{ '/assets/img/flareon12/chall6.png' | relative_url }})
+
+The initial analysis (from DiE) confirms the artifact is a PyInstaller bundle:
+
+-  Unpacking: The pyinstxtractor tool was utilized to unpack this archive. This process extracts the embedded .pyc (Python bytecode) files from the ELF container.
+
+-  Decompilation: The main .pyc file was then processed using pylingual to decompile the bytecode and reconstruct the original Python source code.
+
+A subsequent static analysis of the recovered source code made it evident that the program implements the functionality of a simple 'ChatApp'.
+
+![chall6-send-msg]({{ '/assets/img/flareon12/chall6-pic2.png' | relative_url }})
+
+The `send_message_event` method of the ChatApp class governs the message sending process. Inside this method, the message (msg) is passed to `self.logic.process_message(msg)`. This call is responsible for encrypting the message before it is displayed on the client. We must now continue to analyze this specific method (process_message) to understand its underlying encryption mechanism.
+
+![chall6-process-msg]({{ '/assets/img/flareon12/chall6-pic3.png' | relative_url }})
+
+The message encryption handler (`process_message`) implements two distinct, user-selectable encryption mechanisms:
+
+- RSA encryption
+
+- LCG-XOR encryption
+
+!chall6]({{ '/assets/img/flareon12/chall6-pic4.png' | relative_url }})
+
+The RSA public key, which is utilized by the asymmetric encryption routine, is located in the file `public.pem`. Furthermore, the application persists its chat history. These logs are written to `chat_log.json`.
+
+![chall6]({{ '/assets/img/flareon12/chall6-pic5.png' | relative_url }})
+
+The program was executed as part of dynamic analysis. The objective was to capture the necessary cryptographic artifacts: the public key (from `public.pem`) and a sample ciphertext (from the `chat_log.json`)
+
+![chall6]({{ '/assets/img/flareon12/chall6-pic6.png' | relative_url }})
+
+The RSA ciphertexts were successfully decrypted, and the flag was recovered, by using `factordb`. `factordb` was used to factor the public modulus from the public.pem file. 
+
+![chall6-flag]({{ '/assets/img/flareon12/chall6-pic7.png' | relative_url }})
+
+Flag: W3b3_i5_Gr8@flare-on.com
