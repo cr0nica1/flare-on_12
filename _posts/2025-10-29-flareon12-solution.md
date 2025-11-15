@@ -61,9 +61,9 @@ The `sum` parameter passed to the function is `bear_sum`, which is calculated as
                 bear_mode = True
 ```
 
-To be precise, `bear_sum` is the product of all the `len(LevelNames[current_level])` values. Since multiplication is commutative (the order does not affect the result), we can easily calculate the value regardless of the randomized level sequence. The final calculation is: `bear_sum = 10 * 4 * 12 * 6 * 16 = 46080`
+To be precise, `bear_sum` is the product of all the `len(LevelNames[current_level])` values. Since multiplication is commutative (the order does not affect the result), i can easily calculate the value regardless of the randomized level sequence. The final calculation is: `bear_sum = 10 * 4 * 12 * 6 * 16 = 46080`
 
-By passing this result into the `GenerateFlagText()` function, we can successfully decrypt the ciphertext
+By passing this result into the `GenerateFlagText()` function, i can successfully decrypt the ciphertext
 
 Flag: drilling_for_teddies@flare-on.com
 
@@ -150,7 +150,7 @@ catalyst_injection_function()
 ```
 {% endraw %}
 
-This decompiled script functions as a second-stage loader. Its purpose is to execute yet another encrypted payload, stored in the `encoded_catalyst_strand` variable. The execution is handled by the catalyst coroutine, which strongly indicates that the core authentication mechanism is implemented within this routine. So, we will dump this code object to reverse-engineer the authentication logic.
+This decompiled script functions as a second-stage loader. Its purpose is to execute yet another encrypted payload, stored in the `encoded_catalyst_strand` variable. The execution is handled by the catalyst coroutine, which strongly indicates that the core authentication mechanism is implemented within this routine. So, i will dump this code object to reverse-engineer the authentication logic.
 
 ![chall2-stage2decrypt]({{ '/assets/img/flareon12/chall2-pic3.png' | relative_url }})
 
@@ -244,7 +244,7 @@ Flag: Th3_Alch3m1sts_S3cr3t_F0rmul4@flare-on.com
 
 ![chall3-description]({{ '/assets/img/flareon12/chall3.png' | relative_url }})
 
-The challenge artifact is a PDF file. Using Google Chrome to render this PDF file, we can see that its content is quite simple, as follows:
+The challenge artifact is a PDF file. Using Google Chrome to render this PDF file, i can see that its content is quite simple, as follows:
 
 ![chall3-PDFrender]({{ '/assets/img/flareon12/chall3-pic1.png' | relative_url }})
 
@@ -264,11 +264,11 @@ To parse the individual PDF objects, the pdf-parser tool was utilized. During th
 
 ![chall3-strange-obj]({{ '/assets/img/flareon12/chall3-pic4.png' | relative_url }})
 
-The hex string begins with `ffd8`, which is the magic byte for a JPEG file. This indicates that this data is an image. After converting this hex string into an image, we get the following:
+The hex string begins with `ffd8`, which is the magic byte for a JPEG file. This indicates that this data is an image. After converting this hex string into an image, i get the following:
 
 ![chall3-image]({{ '/assets/img/flareon12/chall3-pic5.png' | relative_url }})
 
-This image is basic: only 1 pixel high and 37 pixels wide (37 bytes). Looking back at the extracted obj content, we see the definition line: `BI /W 37/H 1/CS/G/BPC 8/L 458/F[\n/AHx\n/DCT\n]`. In PDF syntax, BI (Begin Image) ... ID (Image Data) ... EI (End Image) defines an Inline Image. This declaration specifies a 1x37 pixel image, with a Grayscale color space (`/CS /G`), 8-bits per component (`/BPC 8`), which is JPEG-compressed (`/DCT`) and ASCII Hex-encoded (`/AHx`). By interpreting the grayscale pixel values of the 1x37 image (treating each pixel as a byte), the flag is recovered.
+This image is basic: only 1 pixel high and 37 pixels wide (37 bytes). Looking back at the extracted obj content, i see the definition line: `BI /W 37/H 1/CS/G/BPC 8/L 458/F[\n/AHx\n/DCT\n]`. In PDF syntax, BI (Begin Image) ... ID (Image Data) ... EI (End Image) defines an Inline Image. This declaration specifies a 1x37 pixel image, with a Grayscale color space (`/CS /G`), 8-bits per component (`/BPC 8`), which is JPEG-compressed (`/DCT`) and ASCII Hex-encoded (`/AHx`). By interpreting the grayscale pixel values of the 1x37 image (treating each pixel as a byte), the flag is recovered.
 
 ![chall3-flag]({{ '/assets/img/flareon12/chall3-pic6.png' | relative_url }})
 
@@ -334,7 +334,7 @@ Tracing into function `ntfsm.14000166D`, it immediately jumps to function `ntfsm
 
 ![chall5-14000166D]({{ '/assets/img/flareon12/chall5-pic5.png' | relative_url }})
 
-Returning to the main function, a breakpoint was set at the location of the `CALL` to `ntfsm.1400014A1`. This function is a wrapper for the function `ntfsm.140FF0FE0`. We will now analyze the logic of `ntfsm.140FF0FE0`.
+Returning to the main function, a breakpoint was set at the location of the `CALL` to `ntfsm.1400014A1`. This function is a wrapper for the function `ntfsm.140FF0FE0`. I will now analyze the logic of `ntfsm.140FF0FE0`.
 
 ![chall5-140FF0FE0]({{ '/assets/img/flareon12/chall5-pic6.png' | relative_url }})
 
@@ -350,7 +350,7 @@ Analyzing this function's logic, it's clear that it simply reads a qword from th
 
 - `ntfsm.14000ADE0`: Writes arbitrary data to an ADS.
 
-With this information, we can easily recognize that the function calls at addresses `0x14000C192` and `0x14000C1E5` are, in fact, reading the `:position` and `:transitions` streams, respectively. The data is stored in two local stack variables at `[rsp+58AB0]` and `[rsp+58AB8]`. The next step is to continue analyzing further down to find the conditions required to print the 'correct' message.
+With this information, i can easily recognize that the function calls at addresses `0x14000C192` and `0x14000C1E5` are, in fact, reading the `:position` and `:transitions` streams, respectively. The data is stored in two local stack variables at `[rsp+58AB0]` and `[rsp+58AB8]`. The next step is to continue analyzing further down to find the conditions required to print the 'correct' message.
 
 ![chall5-correct_check]({{ '/assets/img/flareon12/chall5-pic8.png' | relative_url }})
 
@@ -358,15 +358,15 @@ The condition for the program to print the 'correct' message is that the values 
 
 ![chall5-check_condition]({{ '/assets/img/flareon12/chall5-pic9.png' | relative_url }})
 
-Continuing the analysis of the next block: at address `0x14000C9D7`, the program stores the current character from the input string into the stack variable `[rsp+30]`. We then continued to 'step into' the execution until the `RIP` pointed to address `0x14000CA5A`:
+Continuing the analysis of the next block: at address `0x14000C9D7`, the program stores the current character from the input string into the stack variable `[rsp+30]`. I then continued to 'step into' the execution until the `RIP` pointed to address `0x14000CA5A`:
 
 ![chall5-jmp_to_check_char]({{ '/assets/img/flareon12/chall5-pic10.png' | relative_url }})
 
-The address that the jmp instruction attempts to jump to is `0x140860252`. However, tracing into this address reveals a block that compares the current character against three values: `'i'`, `'U'`, and `'J'`. If a match is found, it jumps to a corresponding function branch. If we trace backward to address `0x14000CA50` (where the `rcx` value was prepared before the jump), we find this formula: 
+The address that the jmp instruction attempts to jump to is `0x140860252`. However, tracing into this address reveals a block that compares the current character against three values: `'i'`, `'U'`, and `'J'`. If a match is found, it jumps to a corresponding function branch. If i trace backward to address `0x14000CA50` (where the `rcx` value was prepared before the jump), i find this formula: 
 
 `ecx = [rax + rcx*4 + C687B8]`
 
-`rcx` is loaded from the stack variable `[rsp+58D38]`. It can be predicted that this is a state variable which is used as an index for a jump table. The base address of this jump table (`rax + C687B8`) resolves at runtime to `0x140C687B8`. To easily identify this structure, we will use IDA to inspect the data at this address.
+`rcx` is loaded from the stack variable `[rsp+58D38]`. It can be predicted that this is a state variable which is used as an index for a jump table. The base address of this jump table (`rax + C687B8`) resolves at runtime to `0x140C687B8`. To easily identify this structure, i will use IDA to inspect the data at this address.
 
 ![chall5-jump-table]({{ '/assets/img/flareon12/chall5-pic11.png' | relative_url }})
 
@@ -374,7 +374,7 @@ Upon inspection, the functions within this jump table are all simple comparators
 
 **Crafting the script**
 
-With these characteristics, it is clear we can conclude that the program is a Finite State Machine (FSM). Debugging is relatively difficult and complex because the jump table is too large, and a 16-character string is required. However, the logic for printing 'correct' (where position and transitions both equal 16) tells us that if we can make the program pass this check 16 times, the input must be correct. Furthermore, the functions in the jump table have very similar code structures. This means we can analyze them statically to find the correct input. The problem now reduces to: finding the input string that results in the maximum number of successful jumps through the FSM. This is analogous to the "Longest Path" problem in a Directed Acyclic Graph (DAG).
+With these characteristics, it is clear i can conclude that the program is a Finite State Machine (FSM). Debugging is relatively difficult and complex because the jump table is too large, and a 16-character string is required. However, the logic for printing 'correct' (where position and transitions both equal 16) tells us that if i can make the program pass this check 16 times, the input must be correct. Furthermore, the functions in the jump table have very similar code structures. This means i can analyze them statically to find the correct input. The problem now reduces to: finding the input string that results in the maximum number of successful jumps through the FSM. This is analogous to the "Longest Path" problem in a Directed Acyclic Graph (DAG).
 
 By using a Depth-First Search (DFS) algorithm to exhaustively traverse the paths in this graph, I was finally able to find the correct input. This search was performed assuming the initial state where all values in the Alternate Data Streams were zero.
 
@@ -404,7 +404,7 @@ A subsequent static analysis of the recovered source code made it evident that t
 
 ![chall6-send-msg]({{ '/assets/img/flareon12/chall6-pic2.png' | relative_url }})
 
-The `send_message_event` method of the ChatApp class governs the message sending process. Inside this method, the message (msg) is passed to `self.logic.process_message(msg)`. This call is responsible for encrypting the message before it is displayed on the client. We must now continue to analyze this specific method (process_message) to understand its underlying encryption mechanism.
+The `send_message_event` method of the ChatApp class governs the message sending process. Inside this method, the message (msg) is passed to `self.logic.process_message(msg)`. This call is responsible for encrypting the message before it is displayed on the client. I must now continue to analyze this specific method (process_message) to understand its underlying encryption mechanism.
 
 ![chall6-process-msg]({{ '/assets/img/flareon12/chall6-pic3.png' | relative_url }})
 
@@ -447,6 +447,92 @@ IDA failed to construct the Control-Flow Graph (CFG) for the main function and w
 ![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic3.png' | relative_url }})
 
 The majority of the code in the main function is Mixed Boolean-Arithmetic (MBA) obfuscation. Upon closer inspection, a clear pattern emerges: the "junk" MBA code blocks are consistently sandwiched between one instruction that reads from a global variable and another instruction that writes to a global variable. This suggests these intermediate MBA blocks are junk logic that can be safely removed. The plan is to write a script to patch all of these junk code segments by overwriting them with NOP (No-Operation) instructions. The patched binary will then be re-analyzed and decompiled.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic4.png' | relative_url }})
+
+It is evident that functions `sub_1402268C0` and `deobf_14002E020` serve as the program's primary initialization routines. The function `sub_140081590` is pivotal; its return value is immediately used in a conditional check that governs the subsequent execution flow. Therefore, the next logical step is to reverse-engineer `sub_140081590` to determine the specific condition it is validating.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic5.png' | relative_url }})
+
+Upon inspecting the prologue of `sub_140081590`, the function begins by querying local system time information. The function `sub_14042F520` is then invoked. A brief analysis of this sub-function reveals it to be a utility or helper routine whose sole purpose is `std::string` concatenation.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic6.png' | relative_url }})
+
+To quickly identify the specific values being concatenated, I pivoted to dynamic analysis using x64dbg. By debugging the program and inspecting the arguments passed to the concatenation function (`sub_14042F520`), the following data was captured:
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic7.png' | relative_url }})
+
+Clearly, this program is gathering host information (username, desktop name, and time), which is typical behavior for malware when it connects to a C2 server. The function `sub_140004080` then proceeds to encrypt this collected data using the following algorithm:
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic8.png' | relative_url }})
+
+`byte_14046A540` is a big lookup-table:
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic9.png' | relative_url }})
+
+The encrypted string is utilized as a Bearer token for an HTTP GET request, which is initiated via the function `sub_14000D790`. The server's response is subsequently handled and decrypted by the function `sub_140066BA0`. I attempted to decrypt the Bearer token from this initial GET request by reversing the encryption algorithm found in sub_140004080:
+
+```
+2025082006TheBoss@THUNDERNODE
+```
+
+The inbound decryption routine, `sub_140066BA0`, was identified as a simple custom cipher that utilizes a shuffled S-box.I then extracted the payload from the first server response packet in the provided pcapng capture. By processing this captured payload with the reversed `sub_140066BA0` algorithm, I successfully decrypted the server's command, which yielded:
+
+```python
+{"sta": "excellent", "ack": "peanut@theannualtraditionofstaringatdisassemblyforweeks.torealizetheflagwasjustxoredwiththefilenamethewholetime.com:8080"}
+```
+
+Based on the information from the pcapng file, i know that the value returned in the `ack` field of this response specifies the host to which the program will send all subsequent requests.
+
+**C2 communication analysis**
+
+Returning to the main function, after the first GET request is completed, the function `sub_1400D3E60` proceeds to handle further network communications. This function `sub_1400D3E60` is responsible for gathering time and username information, and then creating a key. This time, `key=TheBoss@THUNDERNODE`.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic10.png' | relative_url }})
+
+The functions `sub_140050530` and `sub_140050D20` are responsible for initializing and encrypting the data, respectively, before it is sent to the server via an HTTP POST request. The encryption algorithm used here is AES-CBC, with a static IV of `000102030405060708090a0b0c0d0e0f`. The AES key itself is generated by the function `sub_140081300`.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic11.png' | relative_url }})
+
+The function sub_140081300 generates the AES key based on a very simple XOR algorithm: `aes_key = sha256(key) ^ sha256(username + timestamp)` where the key is `TheBoss@THUNDERNODE`.
+
+**Decrypting the pcapng file**
+
+From the ack field's data: `"peanut@theannualtraditionofstaringatdisassemblyforweeks.torealizetheflagwasjustxoredwiththefilenamethewholetime.com:8080"`, i knew that the username is `peanut`.This username was then used to generate the key and proceed to decrypt the subsequent network packets
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic12.png' | relative_url }})
+
+At the response at frame 176, i are no longer able to decrypt the data using the aforementioned AES key. It appears that the key has been changed at this specific point.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic13.png' | relative_url }})
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic14.png' | relative_url }})
+
+Continuing to modify the fakenet configuration to debug the process, I realized that at frame 176, the program now uses `username=TheBoss@THUNDERNODE`. After adjusting the key, I was able to resume decryption successfully. This continued to work until frame 208.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic15.png' | relative_url }})
+
+Based on this information, the rocknroll.zip file was extracted from the pcapng capture. However, upon attempting to open the file, it was found to be a password-protected archive.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic16.png' | relative_url }})
+
+Continuing the decryption further down the stream, at frame 232, the server's response is once again a new value: `cid=6`.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic17.png' | relative_url }})
+
+The previous `cid=6` event at frame 176 had changed the username to `TheBoss@THUNDERNODE`. With frame 232, i can easily see that the username has been changed again, this time to `miami`. I must change the AES key (re-generating it with miami) and continue decrypting. At frame 248, the decrypted server response returns the following file address:
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic18.png' | relative_url }})
+
+This password.txt file was extracted to obtain the password. Finally, using this password, I decompressed the `rocknroll.zip` archive and get the image containing the flag.
+
+![chall7-decompile]({{ '/assets/img/flareon12/chall7-pic19.png' | relative_url }})
+
+Flag: C4N7_ST4R7_A_FLAR3_WITHOUT_4_$PARK@FLARE-ON.COM
+
+
+
+
 
 
 
