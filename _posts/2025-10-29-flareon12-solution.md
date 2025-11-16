@@ -609,11 +609,7 @@ After further analysis, I realized that these 10,000 resource blocks are actuall
 
 ![chall9-des]({{ '/assets/img/flareon12/chall9-pic2.png' | relative_url }})
 
-Returning to the main `10000.exe` file. By using IDA to analyze the file starting from its Entry Point, it's easy to see that the function `sub_140001E87()` handles the program's main functionality.
-
-![chall9-des]({{ '/assets/img/flareon12/chall9-pic2.png' | relative_url }})
-
-The function `sub_140001E87()` loads the contents of the `license.bin` file. The program then checks the size of `license.bin`. If the file size is not equal to 340000 bytes, it immediately prints `invalid license file`.
+Returning to the main `10000.exe` file. By using IDA to analyze the file starting from its Entry Point, it's easy to see that the function `sub_140001E87()` handles the program's main functionality. The function `sub_140001E87()` loads the contents of the `license.bin` file. The program then checks the size of `license.bin`. If the file size is not equal to 340000 bytes, it immediately prints `invalid license file`.
 
 ![chall9-des]({{ '/assets/img/flareon12/chall9-pic3.png' | relative_url }})
 
